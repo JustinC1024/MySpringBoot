@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xyz.slearing.springboot.phone_shop.mapper.Admin.AdminColorMapper">
+    <cache type="xyz.slearing.springboot.phone_shop.config.redis.RedisCache"/>
+
+    <!--批量插入-->
+    <insert id="bulkInsert" parameterType="java.util.List" >
+        insert into color(name,goodsId) values
+
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.name},#{item.goodsId})
+        </foreach>
+    </insert>
+
+    <delete id="deleteById" >
+        delete from color where id = #{id}
+    </delete>
+
+    <delete id="deleteByGoodsId" >
+        delete from color where goodsId = #{goodsId}
+    </delete>
+
+    <!--根据goodsId查找图片-->
+    <select id="findByGoodsId" resultType="xyz.slearing.springboot.phone_shop.pojo.Color">
+        select * from color where goodsId = #{goodsId}
+    </select>
+
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.slearing.springboot.phone_shop.mapper.ImgMapper">
+    <cache type="xyz.slearing.springboot.phone_shop.config.redis.RedisCache"/>
+
+    <select id="getImgByGoods" resultType="xyz.slearing.springboot.phone_shop.pojo.Img" parameterType="int">
+        select * from img where goodsId = #{goodsId}
+    </select>
+
+    <insert id="insert" parameterType="xyz.slearing.springboot.phone_shop.pojo.Img">
+        insert into img(name , goodsId) values(#{img.name} , #{img.goodsId})
+    </insert>
+
+    <delete id="delete" >
+        delete from img where goodsId = #{goodsId}
+    </delete>
+
+    <select id="getFirstImgByGoods" resultType="xyz.slearing.springboot.phone_shop.pojo.Img" parameterType="int">
+        select * from img where goodsId = #{goodsId} limit 1
+    </select>
+
+    <select id="getAll" resultType="xyz.slearing.springboot.phone_shop.pojo.Img">
+        select * from img
+    </select>
+
+
+</mapper>

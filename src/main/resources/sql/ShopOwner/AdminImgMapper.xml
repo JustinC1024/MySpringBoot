@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xyz.slearing.springboot.phone_shop.mapper.Admin.AdminImgMapper">
+    <cache type="xyz.slearing.springboot.phone_shop.config.redis.RedisCache"/>
+
+    <!--批量插入-->
+    <insert id="bulkInsert" parameterType="java.util.List" >
+        insert into img(name,goodsId) values
+
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.name},#{item.goodsId})
+        </foreach>
+    </insert>
+
+    <!--根据图片的名字删除图片-->
+    <delete id="deleteById" >
+        delete from img where name = #{imgName}
+    </delete>
+
+    <!--根据商品id删除图片-->
+    <delete id="deleteByGoodsId" >
+        delete from img where goodsId = #{goodsId}
+    </delete>
+
+    <!--根据goodsId查找图片-->
+    <select id="findByGoodsId" resultType="xyz.slearing.springboot.phone_shop.pojo.Img">
+        select * from img where goodsId = #{goodsId}
+    </select>
+</mapper>

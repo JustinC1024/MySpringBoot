@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.slearing.springboot.phone_shop.mapper.ColorMapper">
+    <cache type="xyz.slearing.springboot.phone_shop.config.redis.RedisCache"/>
+
+    <insert id="insert" parameterType="xyz.slearing.springboot.phone_shop.pojo.Color">
+        insert into color(name,goodsId) value (#{name},#{goodsId})
+    </insert>
+
+    <delete id="delete" parameterType="xyz.slearing.springboot.phone_shop.pojo.Color">
+        delete from color where goodsId=#{goodsId}
+    </delete>
+
+    <select id="getColorByGoods" parameterType="int" resultType="xyz.slearing.springboot.phone_shop.pojo.Color">
+        select * from color where goodsId=#{goodsId}
+    </select>
+
+    <!--批量插入-->
+    <insert id="bulkInsert" parameterType="java.util.List" >
+        insert into color(name,goodsId) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.name},#{item.goodsId})
+        </foreach>
+    </insert>
+
+    <select id="getFristColorByGoods" parameterType="int" resultType="xyz.slearing.springboot.phone_shop.pojo.Color">
+        select * from color where goodsId=#{goodsId} limit 1
+    </select>
+
+</mapper>

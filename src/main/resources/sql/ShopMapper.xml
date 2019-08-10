@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.slearing.springboot.phone_shop.mapper.ShopMapper">
+    <cache type="xyz.slearing.springboot.phone_shop.config.redis.RedisCache"/>
+
+    <select id="getShopOwnerById" parameterType="int" resultType="xyz.slearing.springboot.phone_shop.pojo.ShopOwner">
+        select * from shopOwner
+        <where>
+            id=#{id}
+        </where>
+    </select>
+
+</mapper>

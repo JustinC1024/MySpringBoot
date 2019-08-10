@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xyz.slearing.springboot.phone_shop.mapper.Admin.AdminGoodsMapper">
+
+    <resultMap id="baseReslutMap" type="xyz.slearing.springboot.phone_shop.pojo.Goods">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="price" property="price" />
+        <result column="stock" property="stock"/>
+        <result column="content" property="content" />
+
+        <collection  property="colorList" javaType="list" ofType="xyz.slearing.springboot.phone_shop.pojo.Color">
+            <id  column="cId" property="id"/>
+            <result column="cName" property="name" />
+            <result column="cGoodsId" property="goodsId" />
+        </collection>
+
+        <collection property="imgList" javaType="list" ofType="xyz.slearing.springboot.phone_shop.pojo.Img">
+            <id  column="iId" property="id" />
+            <result column="iName" property="name" />
+            <result column="iGoodsId" property="goodsId" />
+        </collection>
+
+    </resultMap>
+
+    <!--<select id="findByPage" resultMap="pageReslutMap" parameterType="xyz.slearing.springboot.phone_shop.pojo.Goods">-->
+        <!--select g.* , i.id iId , i.name iName , i.goodsId iGoodsId , c.id cId , c.name cName , c.goodsId cGoodsId-->
+            <!--from goods g , color c , img i-->
+            <!--where g.ownerId = #{ownerId} and g.id = c.goodsId and g.id = i.goodsId and g.name like concat("%",#{name},"%")-->
+    <!--</select>-->
+
+    <!--增加商品-->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="xyz.slearing.springboot.phone_shop.pojo.Goods">
+        insert into goods(name , price , stock , content , ownerId)
+        VALUES(#{name} , #{price} , #{stock} , #{content} , #{ownerId})
+    </insert>
+
+    <!--更新商品-->
+    <insert id="update" parameterType="xyz.slearing.springboot.phone_shop.pojo.Goods">
+      update goods set name = #{name} , price = #{price} , stock = #{stock},
+      content = #{content} where id = #{id}
+    </insert>
+
+    <!--删除商品-->
+    <delete id="delGoods" parameterType="integer">
+        delete from goods where id = #{id}
+    </delete>
+
+
+    <!--根据id查询商品-->
+    <select id="findGoodsById" resultMap="baseReslutMap">
+        select g.* , i.id iId , i.name iName , i.goodsId iGoodsId , c.id cId , c.name cName , c.goodsId cGoodsId from (goods g left join color c ON g.id = c.goodsId ) left
+         join img i on g.id = i.goodsId
+        where g.id = #{goodsId}
+    </select>
+
+
+    <select id="findByPage" resultMap="pageReslutMap" parameterType="xyz.slearing.springboot.phone_shop.pojo.Goods">
+        select * from goods  where ownerId = #{ownerId} and name like concat("%",#{name},"%")
+    </select>
+
+    <resultMap id="pageReslutMap" type="xyz.slearing.springboot.phone_shop.pojo.Goods">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="price" property="price" />
+        <result column="stock" property="stock"/>
+        <result column="content" property="content" />
+
+        <collection  property="colorList" javaType="list" column="id" ofType="xyz.slearing.springboot.phone_shop.pojo.Color" select="xyz.slearing.springboot.phone_shop.mapper.Admin.AdminColorMapper.findByGoodsId">
+            <id  column="cId" property="id"/>
+            <result column="cName" property="name" />
+            <result column="cGoodsId" property="goodsId" />
+        </collection>
+
+        <collection property="imgList" javaType="list" column="id" ofType="xyz.slearing.springboot.phone_shop.pojo.Img" select="xyz.slearing.springboot.phone_shop.mapper.Admin.AdminImgMapper.findByGoodsId">
+            <id  column="iId" property="id" />
+            <result column="iName" property="name" />
+            <result column="iGoodsId" property="goodsId" />
+        </collection>
+
+    </resultMap>
+</mapper>
